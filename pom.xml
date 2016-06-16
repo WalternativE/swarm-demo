@@ -124,25 +124,6 @@
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>hibernate-search</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- hibernate search stuff -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search-orm</artifactId>
-            <version>5.4.0.Final</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>dom4j</groupId>
-                    <artifactId>dom4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- http://mvnrepository.com/artifact/junit/junit -->
