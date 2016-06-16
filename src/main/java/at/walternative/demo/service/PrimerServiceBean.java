@@ -1,6 +1,7 @@
 package at.walternative.demo.service;
 
 import at.walternative.demo.entities.Tweet;
+import at.walternative.demo.util.DemoLogger;
 import org.jboss.logging.Logger;
 
 import javax.ejb.Stateless;
@@ -18,6 +19,7 @@ public class PrimerServiceBean implements PrimerService, Serializable {
     private EntityManager em;
 
     @Inject
+    @DemoLogger
     private Logger logger;
 
     @Override

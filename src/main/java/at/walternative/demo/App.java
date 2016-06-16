@@ -7,7 +7,6 @@ import org.wildfly.swarm.jpa.JPAFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
 public class App {
-
     public static void main(String[] args) throws Exception {
 
         Swarm container = new Swarm(args);
@@ -46,5 +45,4 @@ public class App {
 
         container.start().deploy(deployment);
     }
-
 }

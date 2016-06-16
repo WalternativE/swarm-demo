@@ -8,6 +8,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 public class Resources {
 
     @Produces
+    @DemoLogger
     public Logger getLoggerInstance(InjectionPoint injectionPoint) {
         return Logger.getLogger(injectionPoint.getMember().getDeclaringClass());
     }
