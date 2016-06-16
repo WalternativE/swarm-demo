@@ -12,26 +12,22 @@
     <h:form>
 
         <div class="row">
-            <b:text value="#{indexController.model.author}"
-                    label="Autor"/>
+
+            <b:text value="#{searchController.searchWord}"
+                    label="Suchwort"/>
         </div>
 
         <div class="row">
-            <b:text value="#{indexController.model.text}"
-                    label="Text"/>
-        </div>
-
-        <div class="row">
-            <h:commandButton action="#{indexController.doSave}"
-                             value="Speichern"
+            <h:commandButton action="#{searchController.doSearch}"
+                             value="Suchen"
                              styleClass="btn btn-primary"/>
         </div>
 
         <div class="row">
             <b:table id="table"
                      var="rowItem"
-                     value="#{indexController.allTweets}"
-                     model="#{indexController.tableModel}"
+                     value="#{searchController.foundTweets}"
+                     model="#{searchController.tableModel}"
                      tableBordered="false"
                      tableCondensed="false"
                      tableStriped="true"

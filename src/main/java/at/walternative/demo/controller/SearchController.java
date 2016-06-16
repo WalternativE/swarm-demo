@@ -16,7 +16,7 @@ import java.util.List;
 
 @ViewScoped
 @Named
-public class IndexController implements Serializable {
+public class SearchController implements Serializable {
 
     @Inject
     @DemoLogger
@@ -25,46 +25,34 @@ public class IndexController implements Serializable {
     @Inject
     private PrimerService primerService;
 
-    private Tweet model;
-
     private TableModel tableModel;
+
+    private String searchWord;
+
+    private List<Tweet> foundTweets;
 
     @PostConstruct
     public void init() {
-        this.model = new Tweet();
         this.tableModel = new DefaultTableModel();
     }
 
-    public void doSave() {
-        logger.info("Do save was used");
-        primerService.saveNewTweet(this.model);
-
-        this.model = new Tweet();
+    public void doSearch() {
+        this.foundTweets = primerService.findListForQueryWord(this.searchWord);
     }
 
-    public String getFirstTweetText() {
-        logger.info("Priming database if necessary");
-        primerService.seedDataBaseWithTweets();
-
-        logger.info("Retrieving first tweet");
-        Tweet tweet = primerService.retrieveFirstTweet();
-
-        return tweet.getText();
+    public String getSearchWord() {
+        return searchWord;
     }
 
-    public Tweet getModel() {
-        return model;
+    public void setSearchWord(String searchWord) {
+        this.searchWord = searchWord;
+    }
+
+    public List<Tweet> getFoundTweets() {
+        return foundTweets;
     }
 
     public TableModel getTableModel() {
         return tableModel;
-    }
-
-    public void setTableModel(TableModel tableModel) {
-        this.tableModel = tableModel;
-    }
-
-    public List<Tweet> getAllTweets() {
-        return primerService.retrieveAllTweets();
     }
 }

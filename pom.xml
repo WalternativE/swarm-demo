@@ -35,6 +35,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
@@ -53,6 +54,7 @@
                         <fraction>ejb</fraction>
                         <fraction>transactions</fraction>
                         <fraction>undertow</fraction>
+                        <fraction>hibernate-search</fraction>
                     </fractions>
                 </configuration>
                 <executions>
@@ -78,13 +80,14 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+
         <!-- additional jsf libs -->
-        <!-- http://mvnrepository.com/artifact/de.larmic.butterfaces/components -->
         <dependency>
             <groupId>de.larmic.butterfaces</groupId>
             <artifactId>components</artifactId>
             <version>2.1.4</version>
         </dependency>
+
         <!-- Wildfly Swarm Fractions -->
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
@@ -118,5 +121,37 @@
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>undertow</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- hibernate search stuff -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+            <version>5.4.0.Final</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>dom4j</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- http://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
