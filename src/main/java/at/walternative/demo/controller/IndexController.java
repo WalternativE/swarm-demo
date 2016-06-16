@@ -13,22 +13,34 @@ import java.io.Serializable;
 @ViewScoped
 @Named
 public class IndexController implements Serializable {
-//
-//    @Inject
-//    @DemoLogger
-//    private Logger logger;
+
+    @Inject
+    @DemoLogger
+    private Logger logger;
 
     @Inject
     private PrimerService primerService;
+    private String text;
 
     public String getFirstTweetText() {
-//        logger.info("Priming database if necessary");
+        logger.info("Priming database if necessary");
         primerService.seedDataBaseWithTweets();
 
-//        logger.info("Retrieving first tweet");
+        logger.info("Retrieving first tweet");
         Tweet tweet = primerService.retrieveFirstTweet();
 
         return tweet.getText();
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void doSave() {
+        logger.info("Do save was used");
+    }
 }

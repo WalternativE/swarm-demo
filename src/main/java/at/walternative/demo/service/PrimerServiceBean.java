@@ -34,6 +34,8 @@ public class PrimerServiceBean implements PrimerService, Serializable {
             em.persist(firstTweet);
 
             logger.info("Persisted tweet with id: " + firstTweet.getId());
+
+            // bubu
         }
     }
 
@@ -41,5 +43,4 @@ public class PrimerServiceBean implements PrimerService, Serializable {
     public Tweet retrieveFirstTweet() {
         return em.find(Tweet.class, 1L);
     }
-
 }

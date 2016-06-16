@@ -7,7 +7,7 @@
     <artifactId>demo</artifactId>
     <name>Wildfly Swarm Example</name>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <version.wildfly.swarm>1.0.0.CR1</version.wildfly.swarm>
@@ -33,11 +33,27 @@
         <finalName>demo</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.wildfly.swarm</groupId>
                 <artifactId>wildfly-swarm-plugin</artifactId>
                 <version>${version.wildfly.swarm}</version>
                 <configuration>
-                    <mainClass>at.walternative.demo.App</mainClass>
+                    <fractions>
+                        <fraction>jsf</fraction>
+                        <fraction>cdi</fraction>
+                        <fraction>jpa</fraction>
+                        <fraction>datasources</fraction>
+                        <fraction>logging</fraction>
+                        <fraction>ejb</fraction>
+                        <fraction>transactions</fraction>
+                        <fraction>undertow</fraction>
+                    </fractions>
                 </configuration>
                 <executions>
                     <execution>
@@ -61,6 +77,13 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- additional jsf libs -->
+        <!-- http://mvnrepository.com/artifact/de.larmic.butterfaces/components -->
+        <dependency>
+            <groupId>de.larmic.butterfaces</groupId>
+            <artifactId>components</artifactId>
+            <version>2.1.4</version>
         </dependency>
         <!-- Wildfly Swarm Fractions -->
         <dependency>
