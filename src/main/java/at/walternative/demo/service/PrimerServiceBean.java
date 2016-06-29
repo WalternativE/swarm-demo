@@ -85,6 +85,8 @@ public class PrimerServiceBean implements PrimerService, Serializable {
             }
         });
 
+        logger.info("Search is done");
+
         return tweetResults;
     }
 }

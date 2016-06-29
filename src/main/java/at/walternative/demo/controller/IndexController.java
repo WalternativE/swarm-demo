@@ -36,7 +36,7 @@ public class IndexController implements Serializable {
     }
 
     public void doSave() {
-        logger.info("Do save was used");
+        logger.info("Do save was used!");
         primerService.saveNewTweet(this.model);
 
         this.model = new Tweet();
