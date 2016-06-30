@@ -125,5 +125,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- microsoft sql jdb driver -->
+        <!-- be aware that you have to download this from the MS site and
+             install it manually -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc42</artifactId>
+            <version>6.0</version>
+        </dependency>
+
     </dependencies>
 </project>

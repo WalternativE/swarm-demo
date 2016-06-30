@@ -2,11 +2,15 @@ package at.walternative.demo;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.wildfly.swarm.ContainerFactory;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.jpa.JPAFraction;
+import org.wildfly.swarm.spi.api.StageConfig;
+import org.wildfly.swarm.undertow.WARArchive;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -34,7 +38,9 @@ public class App {
         container = configureContainer(container);
 
         container.start();
-        container.deploy();
+
+        Archive<?> archive = configureDefaultDeployment(container);
+        container.deploy(archive);
     }
 
     private static void factoryMain(ContainerFactory factory, String[] args) throws Exception {
@@ -43,22 +49,51 @@ public class App {
         container = configureContainer(container);
 
         container.start();
-        container.deploy();
+
+        Archive<?> archive = configureDefaultDeployment(container);
+        container.deploy(archive);
+    }
+
+    private static Archive<?> configureDefaultDeployment(Container container) {
+        Archive<?> archive = container.createDefaultDeployment();
+
+        if (archive instanceof WARArchive) {
+            WARArchive war = (WARArchive) archive;
+
+            String persistenceResource = container
+                    .stageConfig()
+                    .resolve("database.persistenceConf.resourceName")
+                    .getValue();
+
+            war.addAsWebInfResource(new ClassLoaderAsset(persistenceResource,
+                    App.class.getClassLoader()), "classes/META-INF/persistence.xml");
+        }
+
+        return archive;
     }
 
     private static Container configureContainer(Container container) {
+        StageConfig config = container.stageConfig();
+        String connectionUrl = config.resolve("database.connection.url").getValue();
+        String driverClassName = config.resolve("jdbcDriver.driverClassName").getValue();
+        String xaDatasourceClass = config.resolve("jdbcDriver.xaDatasourceClass").getValue();
+        String driverModuleName = config.resolve("jdbcDriver.driverModuleName").getValue();
+
+        String userName = config.resolve("database.connection.userName").getValue();
+        String userPassword = config.resolve("database.connection.userPassword").getValue();
+
         container.fraction(
                 new DatasourcesFraction()
-                        .jdbcDriver("h2", (d) -> {
-                            d.driverClassName("org.h2.Driver");
-                            d.xaDatasourceClass("org.h2.jdbcx.JdbcDataSource");
-                            d.driverModuleName("com.h2database.h2");
+                        .jdbcDriver("ZeDriver", (d) -> {
+                            d.driverClassName(driverClassName);
+                            d.xaDatasourceClass(xaDatasourceClass);
+                            d.driverModuleName(driverModuleName);
                         })
                         .dataSource("ZeDS", (ds) -> {
-                            ds.driverName("h2");
-                            ds.connectionUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-                            ds.userName("sa");
-                            ds.password("sa");
+                            ds.driverName("ZeDriver");
+                            ds.connectionUrl(connectionUrl);
+                            ds.userName(userName);
+                            ds.password(userPassword);
                         })
         );
 
