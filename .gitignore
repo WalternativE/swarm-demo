@@ -18,6 +18,8 @@
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+project-stages.yml
+
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
