@@ -64,3 +64,5 @@ hs_err_pid*`
 target
 .idea
 rebel.xml
+
+src/main/webapp/project-stages.yml
