@@ -1,7 +1,11 @@
 package at.walternative.demo.entities;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Parameter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +13,14 @@ import java.io.Serializable;
 @Entity
 @Table
 @Indexed
+@AnalyzerDef(name = "englishLanguageAnalyzer",
+        tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                        @Parameter(name = "language", value = "English")
+                })
+        })
 public class Tweet implements Serializable {
 
     private Long id;
@@ -28,6 +40,7 @@ public class Tweet implements Serializable {
 
     @Column
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+    @Analyzer(definition = "englishLanguageAnalyzer")
     public String getText() {
         return text;
     }

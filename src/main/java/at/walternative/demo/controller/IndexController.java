@@ -1,7 +1,7 @@
 package at.walternative.demo.controller;
 
 import at.walternative.demo.entities.Tweet;
-import at.walternative.demo.service.PrimerService;
+import at.walternative.demo.service.SearchService;
 import at.walternative.demo.util.DemoLogger;
 import de.larmic.butterfaces.model.table.DefaultTableModel;
 import de.larmic.butterfaces.model.table.TableModel;
@@ -23,7 +23,7 @@ public class IndexController implements Serializable {
     private Logger logger;
 
     @Inject
-    private PrimerService primerService;
+    private SearchService searchService;
 
     private Tweet model;
 
@@ -37,17 +37,17 @@ public class IndexController implements Serializable {
 
     public void doSave() {
         logger.info("Do save was used!");
-        primerService.saveNewTweet(this.model);
+        searchService.saveNewTweet(this.model);
 
         this.model = new Tweet();
     }
 
     public String getFirstTweetText() {
         logger.info("Priming database if necessary");
-        primerService.seedDataBaseWithTweets();
+        searchService.seedDataBaseWithTweets();
 
         logger.info("Retrieving first tweet");
-        Tweet tweet = primerService.retrieveFirstTweet();
+        Tweet tweet = searchService.retrieveFirstTweet();
 
         return tweet.getText();
     }
@@ -65,6 +65,6 @@ public class IndexController implements Serializable {
     }
 
     public List<Tweet> getAllTweets() {
-        return primerService.retrieveAllTweets();
+        return searchService.retrieveAllTweets();
     }
 }

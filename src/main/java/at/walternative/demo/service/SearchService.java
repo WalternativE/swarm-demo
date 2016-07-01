@@ -4,7 +4,7 @@ import at.walternative.demo.entities.Tweet;
 
 import java.util.List;
 
-public interface PrimerService {
+public interface SearchService {
 
     void seedDataBaseWithTweets();
 
@@ -14,6 +14,7 @@ public interface PrimerService {
 
     void saveNewTweet(Tweet tweet);
 
-    List<Tweet> findListForQueryWord(String word);
+    List<Tweet> findListForKeyWordQuery(String word);
 
+    List<Tweet> findListForFuzzyKeyWordQuery(String fuzzyKeyWord, int editDistance);
 }

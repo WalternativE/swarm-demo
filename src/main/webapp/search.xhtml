@@ -11,37 +11,46 @@
 <div class="container" style="padding: 10px;">
     <h:form>
 
-        <div class="row">
+        <b:section
+                label="Search">
+            <b:text value="#{searchController.keyWord}"
+                    label="Keyword Search"/>
 
-            <b:text value="#{searchController.searchWord}"
-                    label="Suchwort"/>
-        </div>
-
-        <div class="row">
             <h:commandButton action="#{searchController.doSearch}"
-                             value="Suchen"
+                             value="Search"
                              styleClass="btn btn-primary"/>
-        </div>
 
-        <div class="row">
-            <b:table id="table"
-                     var="rowItem"
-                     value="#{searchController.foundTweets}"
-                     model="#{searchController.tableModel}"
-                     tableBordered="false"
-                     tableCondensed="false"
-                     tableStriped="true"
-                     rendered="true">
-                <b:column id="author"
-                          label="Author">
-                    <h:outputLabel value="#{rowItem.author}"/>
-                </b:column>
-                <b:column id="text"
-                          label="Text">
-                    <h:outputLabel value="#{rowItem.text}"/>
-                </b:column>
-            </b:table>
-        </div>
+            <b:text value="#{searchController.fuzzyKeyWord}"
+                    label="Fuzzy Keyword Search"/>
+            <b:number value="#{searchController.editDistance}"
+                      label="Distance"
+                      tooltip="Between 1 and 2"
+                      required="false"
+                      min="1"
+                      max="2"/>
+
+            <h:commandButton action="#{searchController.doFuzzySearch}"
+                             value="Search"
+                             styleClass="btn btn-primary"/>
+        </b:section>
+
+        <b:table id="table"
+                 var="rowItem"
+                 value="#{searchController.foundTweets}"
+                 model="#{searchController.tableModel}"
+                 tableBordered="false"
+                 tableCondensed="false"
+                 tableStriped="true"
+                 rendered="true">
+            <b:column id="author"
+                      label="Author">
+                <h:outputLabel value="#{rowItem.author}"/>
+            </b:column>
+            <b:column id="text"
+                      label="Text">
+                <h:outputLabel value="#{rowItem.text}"/>
+            </b:column>
+        </b:table>
 
     </h:form>
 </div>

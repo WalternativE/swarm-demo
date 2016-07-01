@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class PrimerServiceBean implements PrimerService, Serializable {
+public class SearchServiceBean implements SearchService, Serializable {
 
     @PersistenceContext(unitName = "MyPu")
     private EntityManager em;
@@ -59,34 +59,57 @@ public class PrimerServiceBean implements PrimerService, Serializable {
     }
 
     @Override
-    public List<Tweet> findListForQueryWord(String word) {
+    public List<Tweet> findListForKeyWordQuery(String statement) {
+        logger.info("Key word search statement incoming: " + statement);
 
         FullTextEntityManager fem = Search.getFullTextEntityManager(em);
-
         QueryBuilder builder = fem.getSearchFactory().buildQueryBuilder().forEntity(Tweet.class).get();
 
-        Query query = builder.keyword()
-                            .onFields("author", "text")
-                            .matching(word)
-                            .createQuery();
+        Query query = builder
+                .keyword()
+                .onFields("author", "text")
+                .matching(statement)
+                .createQuery();
 
         javax.persistence.Query q = fem.createFullTextQuery(query, Tweet.class);
+        return returnTypedListForQuery(q, Tweet.class);
+    }
 
-        List tweets = q.getResultList();
+    @Override
+    public List<Tweet> findListForFuzzyKeyWordQuery(String fuzzyKeyWord, int editDistance) {
+        logger.info("Fuzzy key word search statement incoming: " + fuzzyKeyWord);
 
-        List<Tweet> tweetResults = new ArrayList<>();
+        FullTextEntityManager fem = Search.getFullTextEntityManager(em);
+        QueryBuilder builder = fem.getSearchFactory().buildQueryBuilder().forEntity(Tweet.class).get();
 
+        Query query = builder
+                .keyword()
+                .fuzzy()
+                .withEditDistanceUpTo(editDistance)
+                .withPrefixLength(1)
+                .onFields("author", "text")
+                .matching(fuzzyKeyWord)
+                .createQuery();
+
+        javax.persistence.Query q = fem.createFullTextQuery(query, Tweet.class);
+        return returnTypedListForQuery(q, Tweet.class);
+    }
+
+    private <T> List<T> returnTypedListForQuery(javax.persistence.Query query, Class<T> clazz) {
+        List entities = query.getResultList();
+        List<T> entityResults = new ArrayList<>();
+
+        // this is as safe as it can be...
         //noinspection unchecked
-        tweets.forEach(tweet -> {
-            if (!(tweet instanceof Tweet)) {
-                throw new RuntimeException("This is shit");
-            } else {
-                tweetResults.add((Tweet) tweet);
+        entities.forEach(entity -> {
+            try {
+                entityResults.add(clazz.cast(entity));
+            } catch (ClassCastException e) {
+                logger.error("You might miscalculated your class cast her, laddy...");
             }
         });
 
-        logger.info("Search is done");
-
-        return tweetResults;
+        logger.info("Results are in");
+        return entityResults;
     }
 }

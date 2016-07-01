@@ -1,7 +1,7 @@
 package at.walternative.demo.controller;
 
 import at.walternative.demo.entities.Tweet;
-import at.walternative.demo.service.PrimerService;
+import at.walternative.demo.service.SearchService;
 import at.walternative.demo.util.DemoLogger;
 import de.larmic.butterfaces.model.table.DefaultTableModel;
 import de.larmic.butterfaces.model.table.TableModel;
@@ -23,13 +23,15 @@ public class SearchController implements Serializable {
     private Logger logger;
 
     @Inject
-    private PrimerService primerService;
+    private SearchService searchService;
 
     private TableModel tableModel;
 
-    private String searchWord;
+    private String keyWord;
 
     private List<Tweet> foundTweets;
+    private String fuzzyKeyWord;
+    private Integer editDistance = 1;
 
     @PostConstruct
     public void init() {
@@ -37,15 +39,19 @@ public class SearchController implements Serializable {
     }
 
     public void doSearch() {
-        this.foundTweets = primerService.findListForQueryWord(this.searchWord);
+        this.foundTweets = searchService.findListForKeyWordQuery(this.keyWord);
     }
 
-    public String getSearchWord() {
-        return searchWord;
+    public void doFuzzySearch() {
+        this.foundTweets = searchService.findListForFuzzyKeyWordQuery(this.fuzzyKeyWord, this.editDistance);
     }
 
-    public void setSearchWord(String searchWord) {
-        this.searchWord = searchWord;
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
     }
 
     public List<Tweet> getFoundTweets() {
@@ -54,5 +60,21 @@ public class SearchController implements Serializable {
 
     public TableModel getTableModel() {
         return tableModel;
+    }
+
+    public void setFuzzyKeyWord(String fuzzyKeyWord) {
+        this.fuzzyKeyWord = fuzzyKeyWord;
+    }
+
+    public String getFuzzyKeyWord() {
+        return fuzzyKeyWord;
+    }
+
+    public void setEditDistance(Integer editDistance) {
+        this.editDistance = editDistance;
+    }
+
+    public Integer getEditDistance() {
+        return editDistance;
     }
 }
