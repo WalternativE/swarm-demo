@@ -39,7 +39,7 @@ public class Tweet implements Serializable {
     }
 
     @Column
-    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.YES)
     @Analyzer(definition = "englishLanguageAnalyzer")
     public String getText() {
         return text;

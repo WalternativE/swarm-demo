@@ -42,6 +42,11 @@ public class SearchController implements Serializable {
         this.foundTweets = searchService.findListForKeyWordQuery(this.keyWord);
     }
 
+    public void doMoreLikeThisQuery(Tweet tweet) {
+        logger.info("Find more like tweet with id: " + tweet.getId());
+        this.foundTweets = searchService.findMoreLikeThisQuery(tweet.getId());
+    }
+
     public void doFuzzySearch() {
         this.foundTweets = searchService.findListForFuzzyKeyWordQuery(this.fuzzyKeyWord, this.editDistance);
     }

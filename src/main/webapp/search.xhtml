@@ -50,6 +50,12 @@
                       label="Text">
                 <h:outputLabel value="#{rowItem.text}"/>
             </b:column>
+            <b:column label="Find more"
+                      id="more-like-this">
+                <h:commandButton actionListener="#{searchController.doMoreLikeThisQuery(rowItem)}"
+                                 value="More like this"
+                                 styleClass="btn btn-primary"/>
+            </b:column>
         </b:table>
 
     </h:form>

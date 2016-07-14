@@ -17,4 +17,6 @@ public interface SearchService {
     List<Tweet> findListForKeyWordQuery(String word);
 
     List<Tweet> findListForFuzzyKeyWordQuery(String fuzzyKeyWord, int editDistance);
+
+    List<Tweet> findMoreLikeThisQuery(Long tweetId);
 }

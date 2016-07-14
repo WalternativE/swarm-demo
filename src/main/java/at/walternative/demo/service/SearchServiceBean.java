@@ -95,6 +95,23 @@ public class SearchServiceBean implements SearchService, Serializable {
         return returnTypedListForQuery(q, Tweet.class);
     }
 
+    @Override
+    public List<Tweet> findMoreLikeThisQuery(Long tweetId) {
+        logger.info("More like this search statement incoming: " + tweetId);
+
+        FullTextEntityManager fem = Search.getFullTextEntityManager(em);
+        QueryBuilder builder = fem.getSearchFactory().buildQueryBuilder().forEntity(Tweet.class).get();
+
+        Query query = builder
+                .moreLikeThis()
+                .comparingFields("text")
+                .toEntityWithId(tweetId)
+                .createQuery();
+
+        javax.persistence.Query q = fem.createFullTextQuery(query, Tweet.class);
+        return returnTypedListForQuery(q, Tweet.class);
+    }
+
     private <T> List<T> returnTypedListForQuery(javax.persistence.Query query, Class<T> clazz) {
         List entities = query.getResultList();
         List<T> entityResults = new ArrayList<>();
