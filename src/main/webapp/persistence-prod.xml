@@ -6,8 +6,9 @@
     <persistence-unit name="MyPu" transaction-type="JTA">
         <jta-data-source>java:/jboss/datasources/ZeDS</jta-data-source>
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="none"/>
             <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
+            <property name="javax.persistence.schema-generation.drop-source" value="metadata" />
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect"/>
             <property name="show_sql" value="true"/>
